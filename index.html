@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devis SYL IMPRIMERIE</title>
+    
+    <title>SYL IMPRIMERIE - Devis et Impression en Ligne Abidjan</title>
+    <meta name="description" content="Simulez votre devis en ligne chez SYL IMPRIMERIE. Impression de cartes de visite, flyers, bâches publicitaires, CV au meilleur prix à Abidjan, Côte d'Ivoire.">
+    <meta name="keywords" content="imprimerie abidjan, syl imprimerie, impression en ligne cote d'ivoire, devis imprimerie, flyer, carte de visite">
+    <meta name="author" content="SYL IMPRIMERIE">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -14,7 +20,12 @@
         }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); padding: 20px; margin: 0; }
         #zoneFacture { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 500px; margin: 20px auto; box-sizing: border-box; }
-        h2 { color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-top: 0; }
+        
+        /* Style du bloc Logo + Titre */
+        .header-facture { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--accent-color); padding-bottom: 15px; }
+        .logo-entreprise { max-width: 120px; height: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; }
+        h2 { color: var(--primary-color); margin: 0; }
+        
         label { display: block; margin-top: 15px; font-weight: bold; color: #333; }
         select, input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         .resultat { font-size: 1.2em; font-weight: bold; margin: 20px 0; color: var(--primary-color); }
@@ -23,13 +34,19 @@
         .btn-email { background: #ea4335; }
         .btn-pdf { background: var(--primary-color); }
         .btn:hover { opacity: 0.9; }
+        
+        /* Cache les boutons uniquement sur le PDF final */
         .facture-mode .btn { display: none !important; }
     </style>
 </head>
 <body>
 
 <div id="zoneFacture">
-    <h2>SYL IMPRIMERIE</h2>
+    
+    <div class="header-facture">
+        <div style="font-size: 2.5em; margin-bottom: 10px;">🖨️</div>
+        <h2>SYL IMPRIMERIE</h2>
+    </div>
 
     <label for="produit">Type de produit ou service :</label>
     <select id="produit" onchange="calculerDevis()">
@@ -64,13 +81,14 @@
         </div>
         <p style="margin-top: 30px; text-align: center; font-size: 0.8em; color: #718096; font-style: italic;">Merci pour votre confiance ! À bientôt chez SYL IMPRIMERIE.</p>
     </div>
-            
+
     <button class="btn btn-whatsapp" onclick="envoyerWhatsApp()">Commander via WhatsApp</button>
     <button class="btn btn-email" onclick="envoyerEmail()">Commander par E-mail</button>
     <button class="btn btn-pdf" onclick="telechargerFacture()">Télécharger ma facture PDF</button>
 </div>
 
 <script>
+    // Grille des prix unitaires en FCFA
     const TARIFS = {
         carte: 100,              
         flyer: 200,              
@@ -84,6 +102,7 @@
         impression_standard: 100  
     };
 
+    // Fonction de calcul automatique du total
     function calculerDevis() {
         const produitSelect = document.getElementById("produit");
         if (!produitSelect) return;
@@ -95,10 +114,10 @@
         const prixUnitaire = TARIFS[produitChoisi] || 0;
         const prixTotal = prixUnitaire * quantite;
 
-        // Mise à jour propre du total avec séparateur de milliers
         document.getElementById("prixTotal").innerText = prixTotal.toLocaleString('fr-FR');
     }
 
+    // Fonction d'envoi des informations sur WhatsApp
     function envoyerWhatsApp() {
         const produitSelect = document.getElementById("produit");
         const nomProduit = produitSelect.options[produitSelect.selectedIndex].text;
@@ -116,6 +135,7 @@
         window.open(lienWhatsApp, '_blank');
     }
 
+    // Fonction d'envoi par Mail
     function envoyerEmail() {
         const produitSelect = document.getElementById("produit");
         const nomProduit = produitSelect.options[produitSelect.selectedIndex].text;
@@ -139,6 +159,7 @@
         window.location.href = lienEmail;
     }
 
+    // Fonction de génération et téléchargement du fichier PDF
     function telechargerFacture() {
         const element = document.getElementById('zoneFacture');
         const produitSelect = document.getElementById("produit");
@@ -169,7 +190,7 @@
         });
     }
 
-    // Sécurité additionnelle : calcul immédiat dès que le DOM est totalement chargé
+    // Lancement automatique du premier calcul dès que le site charge
     document.addEventListener("DOMContentLoaded", function() {
         calculerDevis();
     });
